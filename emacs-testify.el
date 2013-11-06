@@ -29,7 +29,7 @@
 
 (defun testify-run (module &optional case_info)
   (compile (concat "cd " (testify-project-root)
-                   "; " (testify-sandbox-command) "testify " module " " (or case_info ""))))
+                   " && " (testify-sandbox-command) " && " "testify " module " " (or case_info ""))))
 
 (defun testify-get-id-from-pgconf-dir (directory-name)
   (string-match "pgconf-\\(.*?\\)-\\(.*\\)/" directory-name)
@@ -42,7 +42,10 @@
 
 (defun testify-sandbox-command ()
   (if testify-sandbox-directory 
-      (concat "source " testify-sandbox-directory "/" "environment.sh; ") ""))
+      (concat "source " testify-sandbox-directory "/" "environment.sh ")
+    (progn
+     (testify-set-sandbox)
+     (testify-sandbox-command))))
 
 (defun testify-set-sandbox ()
   (interactive)
