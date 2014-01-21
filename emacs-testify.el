@@ -24,7 +24,7 @@
 
 (defun testify-get-case-name ()
   (save-excursion
-    (re-search-backward "class \\(.*?\\)(")
+    (re-search-backward "^class \\(.*?\\)(")
     (match-string 1 nil)))
 
 (defun testify-run (module &optional case_info)
