@@ -42,7 +42,7 @@
 
 (defun testify-sandbox-command ()
   (if testify-sandbox-directory 
-      (concat "source " testify-sandbox-directory "/" "environment.sh ")
+      (concat "source " testify-sandbox-directory "/" "environment.sh ;" "source " testify-sandbox-directory "/" "environ.sh ")
     (progn
      (testify-set-sandbox)
      (testify-sandbox-command))))
