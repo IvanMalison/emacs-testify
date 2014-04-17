@@ -29,7 +29,7 @@
 
 (defun testify-run (module &optional case_info)
   (compile (concat "cd " (testify-project-root)
-                   " && " (testify-sandbox-command) " && " "testify " module " " (or case_info ""))))
+                   (testify-sandbox-command) " && " "testify " module " " (or case_info ""))))
 
 (defun testify-get-id-from-pgconf-dir (directory-name)
   (string-match "pgconf-\\(.*?\\)-\\(.*\\)/" directory-name)
@@ -41,11 +41,13 @@
                          (concat "ls -a " (testify-project-root) " | grep .pgconf")))))
 
 (defun testify-sandbox-command ()
-  (if testify-sandbox-directory 
-      (concat "source " testify-sandbox-directory "/" "environment.sh ;" "source " testify-sandbox-directory "/" "environ.sh ")
-    (progn
-     (testify-set-sandbox)
-     (testify-sandbox-command))))
+  (cond 
+   (testify-sandbox-directory
+    (concat " && source " testify-sandbox-directory "/" "environment.sh ;" "source " testify-sandbox-directory "/" "environ.sh "))
+   ((not (string-match (testify-project-root) "yelp-main")) "")
+   (t (progn
+        (testify-set-sandbox)
+        (testify-sandbox-command)))))
 
 (defun testify-set-sandbox ()
   (interactive)
